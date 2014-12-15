@@ -214,10 +214,13 @@
       plotData[plotLength-1] = CGPointMake(plotLength-1,0.0f);
       
       CGMutablePathRef halfPath = CGPathCreateMutable();
-      CGPathAddLines(halfPath,
-                     NULL,
-                     plotData,
-                     plotLength);
+      CGPathMoveToPoint(halfPath, NULL, 0, 0);
+      for(int i = 0; i < plotLength; i++) {
+          CGPathAddLineToPoint(halfPath, NULL, 5 * plotData[i].x, 0);
+          CGPathAddLineToPoint(halfPath, NULL, 5 * plotData[i].x, plotData[i].y);
+          CGPathAddLineToPoint(halfPath, NULL, 5 * plotData[i].x + 3, plotData[i].y);
+          CGPathAddLineToPoint(halfPath, NULL, 5 * plotData[i].x + 3, 0);
+      }
       CGMutablePathRef path = CGPathCreateMutable();
       
       double xscale = (frame.size.width) / (float)plotLength;
