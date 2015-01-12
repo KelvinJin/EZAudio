@@ -91,6 +91,14 @@ typedef NS_ENUM(NSInteger,EZPlotType){
  */
 @property (nonatomic,assign,setter=setShouldMirror:) BOOL shouldMirror;
 
+@property (nonatomic,assign,setter=setRectWidth:) float rectWidth;
+
+@property (nonatomic,assign,setter=setGapWidth:) float gapWidth;
+
+@property (nonatomic,assign,setter=setShouldIndicator:) BOOL shouldIndicator;
+
+@property (nonatomic,assign,setter=setEndPoint:) float endPoint;
+
 #pragma mark - Clearing
 ///-----------------------------------------------------------
 /// @name Clearing The Plot

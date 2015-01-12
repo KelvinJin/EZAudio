@@ -49,6 +49,8 @@
 @synthesize shouldMirror    = _shouldMirror;
 @synthesize rectWidth       = _rectWidth;
 @synthesize gapWidth        = _gapWidth;
+@synthesize shouldIndicator = _shouldIndicator;
+@synthesize endPoint        = _endPoint;
 
 #pragma mark - Initialization
 -(id)init {
@@ -93,6 +95,8 @@
         self.shouldFill      = NO;
         self.rectWidth     = 1.0;
         self.gapWidth      = 0.0;
+        self.shouldIndicator = false;
+        self.endPoint        = 1.0;
         plotData             = NULL;
         _scrollHistory       = NULL;
         _scrollHistoryLength = kEZAudioPlotDefaultHistoryBufferLength / (self.gapWidth + self.rectWidth);
@@ -138,6 +142,16 @@
     -(void)setGapWidth:(float)gapWidth {
         _gapWidth = gapWidth;
         _scrollHistoryLength = kEZAudioPlotDefaultHistoryBufferLength / (self.gapWidth + self.rectWidth);
+        [self _refreshDisplay];
+    }
+    
+    -(void)setShouldIndicator:(BOOL)shouldIndicator {
+        _shouldIndicator = shouldIndicator;
+        [self _refreshDisplay];
+    }
+    
+    -(void)setEndPoint:(float)endPoint {
+        _endPoint = endPoint;
         [self _refreshDisplay];
     }
     
@@ -244,7 +258,7 @@ length:(int)length {
                 
                 CGMutablePathRef path = CGPathCreateMutable();
                 
-                double xscale = (frame.size.width) / (float)plotLength / scaleFactor / 2;
+                double xscale = (frame.size.width) / (float)plotLength / scaleFactor * _endPoint;
                 double halfHeight = self.shouldMirror ? floor( frame.size.height / 2.0 ) : floor( frame.size.height );
                 
                 // iOS drawing origin is flipped by default so make sure we account for that
@@ -279,14 +293,16 @@ length:(int)length {
                     CGContextStrokePath(ctx);
                 }
                 
-                UIColor *indicatorColor = [UIColor yellowColor];
-                [indicatorColor set];
-                // Draw the yellow indicator
-                float indicatorX = _scrollHistoryIndex * scaleFactor * xscale + _gapWidth;
-                CGRect indicator = CGRectMake(indicatorX, 0, 2, frame.size.height);
-                UIRectFill(indicator);
-                
-                CGContextFillRect(ctx, indicator);
+                if ( self.shouldIndicator ) {
+                    UIColor *indicatorColor = [UIColor yellowColor];
+                    [indicatorColor set];
+                    // Draw the yellow indicator
+                    float indicatorX = _scrollHistoryIndex * scaleFactor * xscale + _gapWidth;
+                    CGRect indicator = CGRectMake(indicatorX, 0, 2, frame.size.height);
+                    UIRectFill(indicator);
+                    
+                    CGContextFillRect(ctx, indicator);
+                }
                 
                 CGPathRelease(path);
             }
