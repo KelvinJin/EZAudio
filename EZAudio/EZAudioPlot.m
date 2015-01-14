@@ -181,6 +181,21 @@ length:(int)length {
     [self _refreshDisplay];
 }
     
+    -(void)clear {
+        if( plotData != nil ){
+            free(plotData);
+            plotData = NULL;
+        }
+        
+        plotLength           = 0;
+        _scrollHistoryIndex  = 0;
+        _scrollHistory       = NULL;
+        _scrollHistoryLength = kEZAudioPlotDefaultHistoryBufferLength / (self.gapWidth + self.rectWidth);
+        
+        [self _refreshDisplay];
+    }
+    
+    
 #pragma mark - Update
     -(void)updateBuffer:(float *)buffer withBufferSize:(UInt32)bufferSize {
         if( _plotType == EZPlotTypeRolling ){
