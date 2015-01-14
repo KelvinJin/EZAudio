@@ -312,7 +312,7 @@ length:(int)length {
                     UIColor *indicatorColor = [UIColor yellowColor];
                     [indicatorColor set];
                     // Draw the yellow indicator
-                    float indicatorX = _scrollHistoryIndex * scaleFactor * xscale + _gapWidth;
+                    float indicatorX = _scrollHistoryIndex * scaleFactor * xscale - 1;
                     CGRect indicator = CGRectMake(indicatorX, 0, 2, frame.size.height);
                     UIRectFill(indicator);
                     
