@@ -163,6 +163,16 @@
 #endif
     }
     
+    -(void)clear {
+        if (plotData != nil) {
+            free(plotData);
+            plotData = nil;
+        }
+        
+        plotLength = 0;
+        [self _refreshDisplay];
+    }
+    
 #pragma mark - Get Data
     -(void)setSampleData:(float *)data
 length:(int)length {
